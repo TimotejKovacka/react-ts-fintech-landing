@@ -13,10 +13,8 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import { Link } from "react-router-dom";
-
-const pages = ["Our funds", "About", "Blog", "Contact Us"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+import { Link as RouterLink } from "react-router-dom";
+import { appBarItems } from "./consts/appBarItems";
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
@@ -32,15 +30,15 @@ function ResponsiveAppBar() {
   };
 
   return (
-    <AppBar position="static" color="transparent">
-      <Container maxWidth="xl">
+    <AppBar position='static' color='transparent'>
+      <Container maxWidth='xl'>
         <Toolbar disableGutters sx={{ color: "#1c73e8" }}>
           <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
           <Typography
-            variant="h6"
+            variant='h6'
             noWrap
-            component="a"
-            href="/"
+            component={RouterLink}
+            to='/'
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
@@ -61,17 +59,17 @@ function ResponsiveAppBar() {
             }}
           >
             <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
+              size='large'
+              aria-label='account of current user'
+              aria-controls='menu-appbar'
+              aria-haspopup='true'
               onClick={handleOpenNavMenu}
-              color="inherit"
+              color='inherit'
             >
               <MenuIcon />
             </IconButton>
             <Menu
-              id="menu-appbar"
+              id='menu-appbar'
               anchorEl={anchorElNav}
               anchorOrigin={{
                 vertical: "bottom",
@@ -88,19 +86,26 @@ function ResponsiveAppBar() {
                 display: { xs: "block", md: "none" },
               }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
+              {appBarItems.map((appBarItem) => (
+                <MenuItem key={appBarItem.id} onClick={handleCloseNavMenu}>
+                  <Typography
+                    textAlign='center'
+                    component={RouterLink}
+                    to={appBarItem.route}
+                    sx={{ textDecoration: "none", color: "#000" }}
+                  >
+                    {appBarItem.label}
+                  </Typography>
                 </MenuItem>
               ))}
             </Menu>
           </Box>
           <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
           <Typography
-            variant="h5"
+            variant='h5'
             noWrap
-            component="a"
-            href=""
+            component={RouterLink}
+            to='/'
             sx={{
               mr: 2,
               display: { xs: "flex", md: "none" },
@@ -121,20 +126,24 @@ function ResponsiveAppBar() {
               justifyContent: "end",
             }}
           >
-            {pages.map((page) => (
+            {appBarItems.map((appBarItem) => (
               <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "#1c73e8", display: "block" }}
+                key={appBarItem.id}
+                component={RouterLink}
+                to={appBarItem.route}
+                sx={{ color: "#1c73e8", display: "block" }}
               >
-                <Link to={page} style={{ textDecoration: "none" }}>
-                  {page}
-                </Link>
+                {appBarItem.label}
               </Button>
             ))}
-            <Button variant="outlined" sx={{ p: 1 }}>
+            <Button
+              variant='outlined'
+              component={RouterLink}
+              to='get-early-access'
+              sx={{ ml: 3 }}
+            >
               Get Early Access
-              <ArrowForwardIcon />
+              <ArrowForwardIcon sx={{ ml: 1 }} />
             </Button>
           </Box>
         </Toolbar>

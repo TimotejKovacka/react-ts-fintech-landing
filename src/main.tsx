@@ -22,6 +22,21 @@ const router = createBrowserRouter([
         element: <Fund />,
         loader: fundLoader,
       },
+      {
+        path: "about",
+        element: <Fund />,
+        loader: fundLoader,
+      },
+      {
+        path: "blog",
+        element: <Fund />,
+        loader: fundLoader,
+      },
+      {
+        path: "contact-us",
+        element: <Fund />,
+        loader: fundLoader,
+      },
     ],
   },
 ]);
