@@ -13,13 +13,24 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import { Link as RouterLink } from "react-router-dom";
+import {
+  createSearchParams,
+  Link as RouterLink,
+  useNavigate,
+} from "react-router-dom";
 import { appBarItems } from "./consts/appBarItems";
+import {
+  FormControl,
+  InputLabel,
+  Select,
+  SelectChangeEvent,
+} from "@mui/material";
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
+  const navigate = useNavigate();
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -29,16 +40,25 @@ function ResponsiveAppBar() {
     setAnchorElNav(null);
   };
 
+  const handleFundChange = (e: SelectChangeEvent) => {
+    navigate({
+      pathname: "funds",
+      search: createSearchParams({
+        fundId: e.target.value,
+      }).toString(),
+    });
+  };
+
   return (
-    <AppBar position='static' color='transparent'>
-      <Container maxWidth='xl'>
+    <AppBar position="static" color="transparent" sx={{ boxShadow: "none" }}>
+      <Container maxWidth="xl">
         <Toolbar disableGutters sx={{ color: "#1c73e8" }}>
           <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
           <Typography
-            variant='h6'
+            variant="h6"
             noWrap
             component={RouterLink}
-            to='/'
+            to="/"
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
@@ -59,17 +79,17 @@ function ResponsiveAppBar() {
             }}
           >
             <IconButton
-              size='large'
-              aria-label='account of current user'
-              aria-controls='menu-appbar'
-              aria-haspopup='true'
+              size="large"
+              aria-label="account of current user"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
               onClick={handleOpenNavMenu}
-              color='inherit'
+              color="inherit"
             >
               <MenuIcon />
             </IconButton>
             <Menu
-              id='menu-appbar'
+              id="menu-appbar"
               anchorEl={anchorElNav}
               anchorOrigin={{
                 vertical: "bottom",
@@ -86,10 +106,30 @@ function ResponsiveAppBar() {
                 display: { xs: "block", md: "none" },
               }}
             >
+              <FormControl size="small">
+                <Select
+                  id="our-funds-select-autowidth"
+                  autoWidth
+                  displayEmpty
+                  value=""
+                  renderValue={(selected) => {
+                    if (selected.length === 0) {
+                      return <span>Our Funds</span>;
+                    }
+                  }}
+                  onChange={handleFundChange}
+                  sx={{
+                    ".MuiOutlinedInput-notchedOutline": { border: 0 },
+                  }}
+                >
+                  <MenuItem value={0}>FintechX MiX 10 Gold</MenuItem>
+                  <MenuItem value={1}>FintechX MiX 10 Platinum</MenuItem>
+                </Select>
+              </FormControl>
               {appBarItems.map((appBarItem) => (
                 <MenuItem key={appBarItem.id} onClick={handleCloseNavMenu}>
                   <Typography
-                    textAlign='center'
+                    textAlign="center"
                     component={RouterLink}
                     to={appBarItem.route}
                     sx={{ textDecoration: "none", color: "#000" }}
@@ -102,10 +142,10 @@ function ResponsiveAppBar() {
           </Box>
           <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
           <Typography
-            variant='h5'
+            variant="h5"
             noWrap
             component={RouterLink}
-            to='/'
+            to="/"
             sx={{
               mr: 2,
               display: { xs: "flex", md: "none" },
@@ -126,20 +166,44 @@ function ResponsiveAppBar() {
               justifyContent: "end",
             }}
           >
+            <FormControl size="small">
+              <Select
+                id="our-funds-select-autowidth"
+                autoWidth
+                displayEmpty
+                value=""
+                renderValue={(selected) => {
+                  if (selected.length === 0) {
+                    return <span>Our Funds</span>;
+                  }
+                }}
+                onChange={handleFundChange}
+                sx={{
+                  ".MuiOutlinedInput-notchedOutline": { border: 0 },
+                }}
+              >
+                <MenuItem value={0}>FintechX MiX 10 Gold</MenuItem>
+                <MenuItem value={1}>FintechX MiX 10 Platinum</MenuItem>
+              </Select>
+            </FormControl>
             {appBarItems.map((appBarItem) => (
               <Button
                 key={appBarItem.id}
                 component={RouterLink}
                 to={appBarItem.route}
-                sx={{ color: "#1c73e8", display: "block" }}
+                sx={{
+                  color: "rgba(0, 0, 0, 0.87)",
+                  fontWeight: 400,
+                  display: "block",
+                }}
               >
                 {appBarItem.label}
               </Button>
             ))}
             <Button
-              variant='outlined'
+              variant="outlined"
               component={RouterLink}
-              to='get-early-access'
+              to="get-early-access"
               sx={{ ml: 3 }}
             >
               Get Early Access

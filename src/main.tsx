@@ -18,7 +18,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        path: "funds/:fundId",
+        path: "funds",
         element: <Fund />,
         loader: fundLoader,
       },

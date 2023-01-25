@@ -1,10 +1,5 @@
 export const appBarItems = [
   {
-    id: 1,
-    label: "Our funds",
-    route: "our-funds",
-  },
-  {
     id: 2,
     label: "About",
     route: "about",

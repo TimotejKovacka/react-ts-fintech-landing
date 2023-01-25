@@ -66,7 +66,6 @@ function calculatePercentageShift(
       1
     )
   );
-  console.log(starting_price, current_price, percentage_shift);
   if (starting_price > current_price) return percentage_shift * -1;
   else return percentage_shift;
 }
@@ -88,91 +87,103 @@ const topRightChartItems = [
   },
 ];
 const dateRanges = [1, 7, 31, 365];
+const funds = [
+  {
+    title: "FintechX MiX 10 Gold",
+  },
+  {
+    title: "FintechX MiX 10 Platinum",
+  },
+];
 
-console.log(lineChartData);
-export async function loader({ params }: any) {
-  return { title: "FintechX MiX 10 Gold" };
+export async function loader({ request }: any) {
+  console.log(request);
+  const url = new URL(request.url);
+  const fundId = parseInt(url.searchParams.get("fundId") || "0");
+  return funds[fundId];
 }
 
 const Fund = () => {
-  const fund = useLoaderData() as { title: string };
+  const fund = (useLoaderData() as { title: string }) || {
+    title: "FintechX MiX 10 Gold",
+  };
   const [chartData, setChartData] = useState({
     dateRangeType: 4,
     data: lineChartData,
   });
 
   return (
-    <Container maxWidth='md' sx={{ pt: 12 }}>
+    <Container maxWidth="md" sx={{ pt: 12 }}>
       <Grid container columns={2}>
         <Grid xs={2} pb={6}>
-          <Typography variant='h3' textAlign='center' fontWeight={300}>
+          <Typography variant="h3" textAlign="center" fontWeight={300}>
             {fund.title}
           </Typography>
         </Grid>
-        <Grid xs={1} alignItems='center' display='flex'>
-          <Stack direction='row' spacing={4}>
+        <Grid xs={1} alignItems="center" display="flex">
+          <Stack direction="row" spacing={4}>
             <Typography>{dayjs().format("DD.MM.YYYY")}</Typography>
             {topLeftChartItems.map((item, index) => (
-              <Typography key={index} color='primary'>
+              <Typography key={index} color="primary">
                 {item}
               </Typography>
             ))}
           </Stack>
         </Grid>
-        <Grid xs={1} justifyContent='end' display='flex'>
+        <Grid xs={1} justifyContent="end" display="flex">
           <Stack
-            direction='row'
-            divider={<Divider orientation='vertical' flexItem />}
-            width='fit-content'
-            alignItems='end'
+            direction="row"
+            divider={<Divider orientation="vertical" flexItem />}
+            width="fit-content"
+            alignItems="end"
             spacing={1}
           >
             <Stack
-              direction='row'
-              divider={<Divider orientation='vertical' flexItem />}
-              width='fit-content'
-              height='fit-content'
+              direction="row"
+              divider={<Divider orientation="vertical" flexItem />}
+              width="fit-content"
+              height="fit-content"
               spacing={1}
             >
               {topRightChartItems.map((item, index) => (
-                <Stack direction='column' key={index}>
+                <Stack direction="column" key={index}>
                   <Typography
-                    variant='caption'
-                    color='GrayText'
+                    variant="caption"
+                    color="GrayText"
                     lineHeight={1}
-                    fontSize='0.6rem'
+                    fontSize="0.6rem"
                   >
                     {item.label}
                   </Typography>
                   {item.percentage < 0 ? (
-                    <Typography variant='body2' color='error'>
+                    <Typography variant="body2" color="error">
                       {item.percentage}%
                     </Typography>
                   ) : (
-                    <Typography variant='body2' color='primary'>
+                    <Typography variant="body2" color="primary">
                       +{item.percentage}%
                     </Typography>
                   )}
                 </Stack>
               ))}
             </Stack>
-            <Stack direction='column' px={2}>
+            <Stack direction="column" px={2}>
               <Typography
-                variant='caption'
-                color='GrayText'
+                variant="caption"
+                color="GrayText"
                 lineHeight={1}
-                fontSize='0.65rem'
+                fontSize="0.65rem"
               >
                 Price
               </Typography>
-              <Typography variant='h5' color='primary'>
+              <Typography variant="h5" color="primary">
                 ${lineChartData[lineChartData.length - 1].p1}
               </Typography>
             </Stack>
           </Stack>
         </Grid>
         <Grid xs={2} pt={4}>
-          <ResponsiveContainer width='100%' height={350}>
+          <ResponsiveContainer width="100%" height={350}>
             <LineChart
               data={chartData.data.slice(
                 -(chartData.dateRangeType !== dateRanges.length
@@ -180,15 +191,15 @@ const Fund = () => {
                   : 0)
               )}
             >
-              <CartesianGrid strokeDasharray='2' vertical={false} />
+              <CartesianGrid strokeDasharray="2" vertical={false} />
               <XAxis
-                dataKey='day'
+                dataKey="day"
                 axisLine={false}
                 tickLine={false}
                 minTickGap={30}
               />
               <YAxis
-                orientation='right'
+                orientation="right"
                 domain={["auto", "auto"]}
                 axisLine={false}
                 tickLine={false}
@@ -198,12 +209,12 @@ const Fund = () => {
                 isAnimationActive={false}
                 formatter={(value, name, props) => [value, "price"]}
               />
-              <Line type='linear' dataKey='p1' stroke='#1c73e8' dot={false} />
+              <Line type="linear" dataKey="p1" stroke="#1c73e8" dot={false} />
             </LineChart>
           </ResponsiveContainer>
         </Grid>
-        <Grid xs={2} pt={3} display='flex' justifyContent='center'>
-          <ButtonGroup variant='outlined' color='primary' aria-label=''>
+        <Grid xs={2} pt={3} display="flex" justifyContent="center">
+          <ButtonGroup variant="outlined" color="primary" aria-label="">
             {topRightChartItems.map((item, index) => (
               <Button
                 key={index}
